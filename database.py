@@ -150,7 +150,7 @@ def calculate_total_level(member_data):
     for key in member_data:
         if key in lifeskills:
             if member_data[key] is None:
-                profession_levels[key] = 0
+                profession_levels[key] = None
                 continue
             parts = str(member_data[key]).split(" ")
             if len(parts) == 2:
@@ -161,9 +161,9 @@ def calculate_total_level(member_data):
                 if curr_lvl_value >= 31:
                     life_fame += calculate_fame_value(curr_lvl_value)
             else:
-                profession_levels[key] = 0
+                profession_levels[key] = None
 
-    return total_level, life_fame, profession_levels
+    return (None, None, profession_levels) if None in profession_levels.values() else (total_level, life_fame, profession_levels)
 
 def calculate_fame_value(level):
     # Fame value calculation based on the level
