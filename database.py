@@ -149,7 +149,7 @@ def calculate_total_level(member_data):
 
     for key in member_data:
         if key in lifeskills:
-            if member_data[key] == 'N/A':
+            if member_data[key] is None:
                 profession_levels[key] = 0
                 continue
             parts = str(member_data[key]).split(" ")
