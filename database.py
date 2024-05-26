@@ -40,6 +40,17 @@ class Database:
                 farming TEXT,
                 sailing TEXT,
                 barter TEXT,
+                gathering_total_level INTEGER,
+                fishing_total_level INTEGER,
+                hunting_total_level INTEGER,
+                cooking_total_level INTEGER,
+                alchemy_total_level INTEGER,
+                processing_total_level INTEGER,
+                training_total_level INTEGER,
+                trading_total_level INTEGER,
+                farming_total_level INTEGER,
+                sailing_total_level INTEGER,
+                barter_total_level INTEGER,
                 total_level INTEGER,
                 life_fame INTEGER,
                 date TEXT,
@@ -80,22 +91,30 @@ class Database:
                 member_id = member[0]
 
             # Calcular total_level y life_fame
-            total_level, life_fame = calculate_total_level(member_data)
+            total_level, life_fame, profession_levels = calculate_total_level(member_data)
 
             # Insertar los datos del aventurero con la fecha actual
             date = datetime.now().strftime("%Y-%m-%d")
             c.execute('''
                 INSERT INTO adventurer_data (
                     guild, family_name, gathering, fishing, hunting, cooking, alchemy, 
-                    processing, training, trading, farming, sailing, barter, total_level, 
-                    life_fame, date
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    processing, training, trading, farming, sailing, barter,
+                    gathering_total_level, fishing_total_level, hunting_total_level, cooking_total_level, 
+                    alchemy_total_level, processing_total_level, training_total_level, trading_total_level,
+                    farming_total_level, sailing_total_level, barter_total_level,
+                    total_level, life_fame, date
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 guild_name, family_name, member_data.get('gathering'), member_data.get('fishing'), 
                 member_data.get('hunting'), member_data.get('cooking'), member_data.get('alchemy'), 
                 member_data.get('processing'), member_data.get('training'), member_data.get('trading'), 
                 member_data.get('farming'), member_data.get('sailing'), member_data.get('barter'), 
-                total_level, life_fame, date
+                profession_levels['gathering'], profession_levels['fishing'], 
+                profession_levels['hunting'], profession_levels['cooking'], 
+                profession_levels['alchemy'], profession_levels['processing'], 
+                profession_levels['training'], profession_levels['trading'], 
+                profession_levels['farming'], profession_levels['sailing'], 
+                profession_levels['barter'], total_level, life_fame, date
             ))
         
         conn.commit()
@@ -126,14 +145,28 @@ def calculate_total_level(member_data):
     }
     total_level = 0
     life_fame = 1
+    profession_levels = {}
+
     for key in member_data:
         if key in lifeskills:
             if member_data[key] == 'N/A':
-                return None, None
+                profession_levels[key] = 0
+                continue
             parts = str(member_data[key]).split(" ")
             if len(parts) == 2:
                 level, number = parts
                 curr_lvl_value = level_map.get(level, 0) + int(number)
+                profession_levels[key] = curr_lvl_value
                 total_level += curr_lvl_value
-                life_fame += curr_lvl_value * 3 if curr_lvl_value >= 31 else 0
-    return total_level, life_fame
+                if curr_lvl_value >= 31:
+                    life_fame += calculate_fame_value(curr_lvl_value)
+            else:
+                profession_levels[key] = 0
+
+    return total_level, life_fame, profession_levels
+
+def calculate_fame_value(level):
+    # Fame value calculation based on the level
+    if level < 31:
+        return 0
+    return 93 + (level - 31) * 3

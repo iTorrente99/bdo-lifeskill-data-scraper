@@ -20,8 +20,8 @@ def extract_profile_info(html):
         'icn_spec11': 'barter'
     }
     
-    # Inicializar los niveles de especialización como 'N/A'
-    specs = {name: 'N/A' for name in spec_mapping.values()}
+    # Inicializar los niveles de especialización como NULL
+    specs = {name: None for name in spec_mapping.values()}
     
     # Extraer todos los niveles de especialización
     for li in soup.select('.character_spec ul li'):
