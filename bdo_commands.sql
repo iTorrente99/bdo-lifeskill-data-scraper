@@ -14,7 +14,7 @@ SELECT
     ROUND(AVG(total_level), 2) AS avg_total_level,
     ROUND(AVG(life_fame), 2) AS avg_life_fame
 FROM adventurer_data
-WHERE date = '2024-05-26' AND total_level IS NOT NULL
+WHERE date = '2024-05-27' AND total_level IS NOT NULL
 GROUP BY guild
 ORDER BY avg_total_level DESC;
 
@@ -77,7 +77,7 @@ FROM
 JOIN 
     adventurer_data ad2 ON ad1.family_name = ad2.family_name AND ad1.guild = ad2.guild
 WHERE 
-    ad1.date = '2024-05-25' AND ad2.date = '2024-05-26'
+    ad1.date = '2024-05-25' AND ad2.date = '2024-05-27'
     AND (ad2.guild = 'Clarity' OR ad2.guild = 'Life')
     AND (ad2.total_level - ad1.total_level) > 0
 ORDER BY 
@@ -108,7 +108,7 @@ FROM
 JOIN 
     adventurer_data ad2 ON ad1.family_name = ad2.family_name AND ad1.guild = ad2.guild
 WHERE 
-    ad1.date = '2024-05-25' AND ad2.date = '2024-05-26'
+    ad1.date = '2024-05-25' AND ad2.date = '2024-05-27'
 GROUP BY 
     ad1.guild
 ORDER BY 

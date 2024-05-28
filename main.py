@@ -35,8 +35,25 @@ guilds_to_scrape = [
     "AquariusZero",
     "Cabbage",
     "LastCore",
-    "Rocinante",
-    "Venividivici"
+    "End",
+    "Bakemonogatari",
+    "LostElysium",
+    "ChillSkill",
+    "Combat",
+    "Artisans_Libre",
+    "Aeglos",
+    "WingedAssassins",
+    "AsulaGeneration",
+    "CantTouchThis",
+    "Core",
+    "Casino_Royal",
+    "Demetori",
+    "Contempt",
+    "Latentes",
+    "Liberation",
+    "TheDutchman",
+    "Nap",
+    "Aquatica"
 ]
 
 def main():
